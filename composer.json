@@ -16,7 +16,8 @@
     ],
     "require": {
         "symfony/console": "^6.0",
-        "symfony/serializer": "^6.0"
+        "symfony/serializer": "^6.0",
+        "eclipxe/xmlschemavalidator": "^3.0"
     },
     "config": {
         "allow-plugins": {
