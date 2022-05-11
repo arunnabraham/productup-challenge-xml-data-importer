@@ -2,7 +2,7 @@
 namespace Arunnabraham\XmlDataImporter;
 interface DataParserAdapterInterface {
 
-    public function processData(string $inputData);
-    public function exportToLocation(string $outputLocation=".");
+    public function processData(): string;
+    public function returnOutput(string $inputData):
 
 }

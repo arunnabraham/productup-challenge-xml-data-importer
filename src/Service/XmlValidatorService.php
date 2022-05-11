@@ -13,8 +13,9 @@ class XmlValidatorService
     {
         try {
            $schemaValidator = SchemaValidator::createFromString($xmlData);
-            $serialize = (new SchemaValidator($xmlData))->validate();
+            return $schemaValidator->validate();
         } catch (Exception $e) {
+            return false;
         }
     }
 }
