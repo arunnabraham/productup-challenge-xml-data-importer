@@ -2,11 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Arunnabraham\XmlDataImporter;
+namespace Arunnabraham\XmlDataImporter\Service;
 
-use Arunnabraham\XmlDataImporter\DataParserAdapterInterface as XmlDataImporterDataParserAdapterInterface;
-use Arunnabraham\XmlDataImporter\XmlImportService as XmlImport;
-use DataParserAdapterInterface;
+use Arunnabraham\XmlDataImporter\Service\DataParserAdapterInterface as XmlDataImporterDataParserAdapterInterface;
 use Exception;
 
 class XmlImportService
@@ -26,10 +24,5 @@ class XmlImportService
             }
         } catch (\Exception $e) {
         }
-    }
-
-    public function importFromLocation($inputLocation, int $parserOption): string
-    {
-        return '';
     }
 }

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Arunnabraham\XmlDataImporter;
+namespace Arunnabraham\XmlDataImporter\Service;
 
 use Exception;
 use Eclipxe\XmlSchemaValidator\SchemaValidator;

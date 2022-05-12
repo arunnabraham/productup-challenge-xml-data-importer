@@ -17,7 +17,8 @@
     "require": {
         "symfony/console": "^6.0",
         "symfony/serializer": "^6.0",
-        "eclipxe/xmlschemavalidator": "^3.0"
+        "eclipxe/xmlschemavalidator": "^3.0",
+        "league/csv": "^9.8"
     },
     "config": {
         "allow-plugins": {
