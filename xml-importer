@@ -1,0 +1,24 @@
+#!/usr/bin/php
+<?php
+
+require_once __DIR__ . '/vendor/autoload.php';
+
+use Symfony\Component\Console\Application;
+use Buzz\Browser;
+use Buzz\Client\FileGetContents;
+use Nyholm\Psr7\Factory\Psr17Factory;
+
+$url = 'https://bangscience.org/tag/coffee/feed/index.xml';
+
+$client = new FileGetContents(new Psr17Factory());
+$browser = new Browser($client, new Psr17Factory());
+$response = $browser->get($url);
+
+$data = $response->getBody()->getContents();
+//var_dump($reader); exit;
+exit;
+$application = new Application();
+
+// ... register commands
+
+$application->run();
