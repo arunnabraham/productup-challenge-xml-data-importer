@@ -1,15 +1,27 @@
 <?php
 $reader = new XMLReader;
 $location = 'file:///home/arun/work/Intreview/ProductsUp/productup-challenge-xml-data-importer/xml-samples/employee.xml'; //__DIR__ .'/../xml-samples/employee.xml';
+//echo strlen(file_get_contents($location))/1024;
 $reader->open($location);
 while ($reader->read()) {
     $node = $reader->expand();
-    $data = getNodeResult($node);
+    $strData = getNodeData($node);
     $reader->next();
 }
 $reader->close();
 
-function getNodeResult(\DomNode $node, $isChild = false)
+function getNodeData($node): string
+{
+    $fp = fopen('php://memory', 'rw');
+    putNodeResultToStream($node,$fp);
+    rewind($fp);
+    $str = stream_get_contents($fp);
+    var_dump(explode(PHP_EOL.'[###]', $str));
+    fclose($fp);
+    return $str;
+}
+
+function putNodeResultToStream(\DomNode $node,$fp): void
 {
     $nodePath = pathinfo($node->getNodePath());
     if ($node->nodeType === XML_ELEMENT_NODE) {
@@ -18,18 +30,22 @@ function getNodeResult(\DomNode $node, $isChild = false)
 
             if (!empty($children)) {
                 foreach ($children as $childNode) {
-                    getNodeResult($childNode);
+                    putNodeResultToStream($childNode, $fp);
                 }
             }
         } else {
-            echo $nodePath['basename'] . '|~ => ~|' . $node->nodeValue.PHP_EOL;
+           // $result[$nodePath['basename']] = $node->nodeValue;
+            fputs($fp, $nodePath['basename'] . '|~ => ~|' . $node->nodeValue);
         }
+        fputs($fp,PHP_EOL.'[####]');
     } else {
         if ($nodePath['basename'] === 'text()') {
-            echo $nodePath['dirname'] . '|~ => ~|' . $node->nodeValue.PHP_EOL;
+            $nodePathSplit = explode("/", $nodePath['dirname']);
+            fputs($fp, end($nodePathSplit) . '|~ => ~|' . $node->nodeValue);
+           // $result[end($nodePathSplit)] = $node->nodeValue;
+            unset($nodePathSplit);
         }
     }
-    return $data ?? [];
 }
 
 function getNodeChildren(\DOMNodeList $childNodes): array
@@ -43,4 +59,4 @@ function getNodeChildren(\DOMNodeList $childNodes): array
     return $children;
 }
 
-echo json_encode($data);
+//echo $strData;
