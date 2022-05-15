@@ -11,9 +11,7 @@ class CsvExporter implements ServiceDataParserAdapterInterface {
     private $data;
     public function processData(): DisplayFormatIO
     {
-       $dataDeserialized = (new Serializer)->deserialize($this->data, 'array', 'xml');
-       // Convert to csv object
-       return (new DisplayFormatIO)
+       return (new DisplayFormatIO)->
     }
 
     public function returnOutput($inputData): string

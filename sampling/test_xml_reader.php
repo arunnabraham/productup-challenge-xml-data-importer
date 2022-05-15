@@ -1,81 +1,160 @@
 <?php
 $reader = new XMLReader;
-$location = 'file:///home/arun/work/Intreview/ProductsUp/productup-challenge-xml-data-importer/xml-samples/employee.xml'; //__DIR__ .'/../xml-samples/employee.xml';
-//echo strlen(file_get_contents($location))/1024;
+$location = '/home/arun/work/Intreview/ProductsUp/productup-challenge-xml-data-importer/xml-samples/employee.xml'; //__DIR__ .'/../xml-samples/employee.xml';
+
 $reader->open($location);
 while ($reader->read()) {
     $node = $reader->expand();
-    $strData = getNodeData($node);
+    $destination = exportData($node, 'json', __DIR__ . '/../outputfiles', 'data.json');
     $reader->next();
 }
 $reader->close();
 
-function getNodeData($node): string
+function processJSON($outputDir, $filename, $sourceResource)
 {
-    $fp = fopen('php://memory', 'rw');
-    putNodeResultToStream($node, $fp);
-    rewind($fp);
-    $str = stream_get_contents($fp);
-    var_dump(explode(PHP_EOL, $str));
-    fclose($fp);
-    return $str;
+    try {
+        $location = $outputDir . '/' . $filename;
+        if(file_exists($location))
+        {
+            unlink($location);
+        }
+        $destinationResource = fopen($location, 'a');
+        $isFirstSeek = true;
+        if (!is_resource($destinationResource)) {
+            throw new Exception('Invalid Destination Resouces');
+        }
+        if (!is_resource($sourceResource)) {
+            throw new Exception('Invalid Source Resouce');
+        }
+        while (!feof($sourceResource)) {
+            $data = fgets($sourceResource);
+            if ($isFirstSeek) {
+                $delimiter = '[';
+            } else {
+                $delimiter = ',';
+            }
+            fwrite($destinationResource, $delimiter . $data);
+            $isFirstSeek = false;
+        }
+        fwrite($destinationResource, ']');
+    } catch (\Exception $e) {
+        return false;
+    }
+    fclose($destinationResource);
+    return true;
+}
+function processCSV($outputDir, $filename, $sourceResource): bool
+{
+    try {
+        $location = $outputDir . '/' . $filename;
+        $destinationResource = fopen($location, 'w');
+        $isFirstLine = true;
+        if (!is_resource($destinationResource)) {
+            throw new Exception('Invalid Destination Resouces');
+        }
+        if (!is_resource($sourceResource)) {
+            throw new Exception('Invalid Source Resouce');
+        }
+        while (!feof($sourceResource)) {
+            $data = json_decode(fgets($sourceResource), true);
+            if (!empty($data)) {
+                $callArrayFn = $isFirstLine ? 'array_keys' : 'array_values';
+                $fputStatus = fputcsv($destinationResource, $callArrayFn($data));
+                if ($isFirstLine) {
+                    //Insert initial values
+                    fputcsv($destinationResource, array_values($data));
+                }
+                if ($fputStatus === false) {
+                    throw new Exception('Error in csv processing');
+                }
+                $isFirstLine = false;
+            }
+        }
+    } catch (\Exception $e) {
+        return false;
+    }
+    fclose($destinationResource);
+    return true;
 }
 
-function putNodeResultToStream(\DomNode $node, $fp): void
+function exportData(DomNode $node, string $mode, string $outputDir, string $filename): string|bool
 {
-    $nodePath = pathinfo($node->getNodePath());
-
-    if ($node->nodeType === XML_ELEMENT_NODE) {
-        if ($node->hasChildNodes()) {
-            $children = getNodeChildren($node->childNodes);
-
-            if (!empty($children)) {
-                foreach ($children as $childNode) {
-                    putNodeResultToStream($childNode, $fp);
-                }
-                /*
-                SEPARATOR NODE START;
-                 */
-                //rewind($fp);
-                //echo stream_get_contents($fp);
-
-                $nodePathBaseName = pathinfo($node->getNodePath(), PATHINFO_BASENAME);
-               if(!empty($node->nextSibling->nodeName))
-               {
-                   if((int)preg_match('/^(\w+)(\[\d+])$/i',$nodePathBaseName)===0) //parent path ignore
-                   {
-                      /* if($init===0){
-                       echo $node->nodeName; //header
-                       } else {
-                           $node->nodeValue; //rows
-                       } */
-                       fputs($fp,$node->nodeValue.'[:-:]');
-                   } else {
-                       fputs($fp,PHP_EOL);
-                   }
-               }
-                //file_put_contents('text.test', PHP_EOL.stream_get_contents($fp), FILE_APPEND);
-                //ftruncate($fp,0);
-                /*
-                SEPARATOR NODE START;
-                 */
-            }
-        } else {
-            // $result[$nodePath['basename']] = $node->nodeValue;
-          /*  if (strlen(trim($node->nodeValue)) > 0) {
-                fputs($fp, $nodePath['basename'] . '|~ => ~|');
-            } */
+    $fp = fopen('php://memory', 'rw');
+    processExport($node, $fp);
+    rewind($fp);
+    $str = '';
+    if ($mode === 'csv') {
+        $status = processCSV($outputDir, $filename, $fp);
+        if ($status) {
+            $str = $outputDir . '/' . $filename;
         }
-    } else {
-       /* if ($nodePath['basename'] === 'text()') {
-            if (strlen(trim($node->nodeValue)) > 0) {
-                $nodePathSplit = explode("/", $nodePath['dirname']);
-                fputs($fp, end($nodePathSplit) . '|~ => ~|' . $node->nodeValue);
-                // $result[end($nodePathSplit)] = $node->nodeValue;
-                unset($nodePathSplit);
-            }
-        } */
     }
+    if ($mode === 'json') {
+        $status = processJSON($outputDir, $filename, $fp);
+        if ($status) {
+            $str = $outputDir . '/' . $filename;
+        }
+    }
+    fclose($fp);
+    $filePathOutput = realpath($str);
+    return is_string(realpath($str)) ? 'file://' . $filePathOutput : $filePathOutput;
+}
+
+function processExport($node, $fp): void
+{
+    processResultToStream($node, $fp);
+    resetProcess();
+}
+
+function resetProcess()
+{
+    processResultToStream(null, null, true);
+}
+
+function processResultToStream(\DomNode|null $node, $fp, $reset = false): void
+{
+    static $row = 0;
+    static $column = 0;
+    static $result = [];
+
+    if ($reset === true) {
+        $row = 0;
+        $column = 0;
+        $result = [];
+        return;
+    }
+    try {
+        $nodePath = pathinfo($node->getNodePath());
+
+        if ($node->nodeType === XML_ELEMENT_NODE) {
+            if ($node->hasChildNodes()) {
+                $children = getNodeChildren($node->childNodes);
+
+                if (!empty($children)) {
+                    foreach ($children as $childNode) {
+                        processResultToStream($childNode, $fp);
+                    }
+                }
+            }
+        }
+        if (preg_match('/^text\(\)(\[\d+])$/u', $nodePath['basename']) === 0 && $nodePath['basename'] !== 'text()') {
+            if ((int)preg_match('/^(\w+)(\[\d+])$/i', $nodePath['basename']) === 0) {
+                $result[$nodePath['basename']] = $node->nodeValue;
+                $column++;
+            } else {
+                $delimiter = $row > 0 ? PHP_EOL : '';
+                fputs($fp, $delimiter . json_encode($result));
+                //file_put_contents(__DIR__ . '/temp.ndjson', json_encode($result) . PHP_EOL, FILE_APPEND);
+                $column = 0;
+                $row++;
+            }
+        }
+    } catch (\Exception $e) {
+        //echo 'Error Found';
+    } finally {
+        //echo 'Process end';
+    }
+    return;
 }
 
 function getNodeChildren(\DOMNodeList $childNodes): array
@@ -89,4 +168,6 @@ function getNodeChildren(\DOMNodeList $childNodes): array
     return $children;
 }
 
-//echo $strData;
+echo $destination !== false ? $destination : 'No File Created';
+echo PHP_EOL;
+echo memory_get_peak_usage()/1024/1024;

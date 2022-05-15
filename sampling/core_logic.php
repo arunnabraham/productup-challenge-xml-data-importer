@@ -35,5 +35,39 @@
                 if(!empty($result))
                     $data[] = $result;
             }
+            ////
+
+
+            //parser
+
+             /*
+                SEPARATOR NODE START;
+                 */
+                //rewind($fp);
+                //echo stream_get_contents($fp);
+/*
+                $nodePathBaseName = pathinfo($node->getNodePath(), PATHINFO_BASENAME);
+                //if (!empty($node->nextSibling->nodeName)) {
+                    if ((int)preg_match('/^(\w+)(\[\d+])$/i', $nodePathBaseName) === 0) //parent path ignore
+                    {
+                        echo $node->nodeName .'==>'. $node->nodeValue;
+                       // $counter === 0 ? fputs($fp, $node->nodeName . '[:-:]') : fputs($fp, $node->nodeValue . '[:-:]');
+                    } else {
+                        echo PHP_EOL;
+                       /* $fpCsv = fopen(__DIR__ . '/test.csv', 'a');
+                        if (is_resource($fpCsv)) {
+                            rewind($fp);
+                            fwrite($fpCsv, implode("|",explode('[:-:]', stream_get_contents($fp))));
+                            fclose($fpCsv);
+                            ftruncate($fp, 0);
+                            $counter++;
+                        } */
+                   // }
+                //}
+                //file_put_contents('text.test', PHP_EOL.stream_get_contents($fp), FILE_APPEND);
+                //ftruncate($fp,0);
+                /*
+                SEPARATOR NODE START;
+                 */
         }
     }

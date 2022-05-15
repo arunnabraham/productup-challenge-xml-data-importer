@@ -10,14 +10,11 @@ use Exception;
 class XmlImportService
 {
 
-    public function xmlToFormatOut(): void
-    {
-    }
-
     public function processImport(XmlDataImporterDataParserAdapterInterface $outputParser, string $input): void
     {
         try {
             if ((new XmlValidatorService)->validateXml($input)) {
+
                 $outputParser->returnOutput($input);
             } else {
                 throw new Exception('Invalid XML input');
@@ -25,4 +22,14 @@ class XmlImportService
         } catch (\Exception $e) {
         }
     }
+
+    private function writeToStream($node)
+    {
+        $streamMemoryPointer =  fopen('php://memory', 'rw');
+        $this->putNodeResultToStream($node, $streamMemoryPointer);
+        fclose($streamMemoryPointer);
+    }
+
+    private function putNodeResultToStream()
+
 }

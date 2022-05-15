@@ -7,16 +7,10 @@ namespace Arunnabraham\XmlDataImporter\Service\ExportIO;
 class DisplayFormatIO
 {
     private string $preOutputData;
-    public function __construct(mixed $preOutputData)
-    {
-        $this->dataInfo = $preOutputData;
-    }
-    public function displayAsRaw(): string
-    {
-        return $this->dataInfo;
-    }
+    private string $outputPath;
 
-    public function displayAsFileLocation($path): string
+    public function displayFileLocation($path=''): string
     {
+        return $path;
     }
 }
