@@ -3,6 +3,7 @@
 
 require_once __DIR__ . '/vendor/autoload.php';
 
+use Arunnabraham\XmlDataImporter\Commands\XMLImportExportCommand;
 use Arunnabraham\XmlDataImporter\Service\XmlImportService;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Dotenv\Dotenv;
@@ -11,14 +12,14 @@ $dotenv = new Dotenv();
 $dotenv->load(__DIR__.'/.env');
 
 $xmli = new XmlImportService;
-$inputFile = 'http://a.cdn.searchspring.net/help/feeds/searchspring.xml';
+$inputFile = 'https://bangscience.org/tag/coffee/feed/index.xml';
 $exportFormat = 'csv';
 $inputType = 'remote';
 
-$output = $xmli->processImport($exportFormat, $inputFile, env('DEFAULT_OUTPUT_DIR_PATH'), $inputType);
-var_dump($output).PHP_EOL;
-/* $application = new Application();
-
+/* $output = $xmli->processImport($exportFormat, $inputFile, env('DEFAULT_OUTPUT_DIR_PATH'), $inputType);
+var_dump($output).PHP_EOL; */
+$app = new Application();
+$app->add(new XMLImportExportCommand());
 // ... register commands
 
-$application->run(); */
+$app->run();

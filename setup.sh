@@ -1,2 +1,2 @@
 #!/usr/bin/sh
-sudo chmod +x $(pwd)/xml-importer
+sudo chmod +x $(pwd)/run

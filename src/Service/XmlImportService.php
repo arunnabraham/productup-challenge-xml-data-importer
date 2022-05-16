@@ -22,7 +22,7 @@ class XmlImportService
         'json' => JsonExporter::class
     ];
 
-    public function processImport($exportFormat, string $inputFile, string $outputDir, string $inputType = 'local')
+    public function processImport($exportFormat, string $inputFile, string $outputDir, string $inputType = 'local'): string
     {
         try {
             $this->exportFormat = $exportFormat;
@@ -39,7 +39,7 @@ class XmlImportService
                 throw new \Exception('Invalid XML Input');
             }
         } catch (\Exception $e) {
-            return $e->getMessage();
+            return 'Error: '.$e->getMessage();
         }
     }
 

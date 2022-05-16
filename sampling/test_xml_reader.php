@@ -1,6 +1,6 @@
 <?php
 $reader = new XMLReader;
-$location = '/home/arun/work/Intreview/ProductsUp/productup-challenge-xml-data-importer/xml-samples/employee.xml'; //__DIR__ .'/../xml-samples/employee.xml';
+$location = __DIR__ .'/../xml-samples/employee.xml';
 
 $reader->open($location);
 while ($reader->read()) {

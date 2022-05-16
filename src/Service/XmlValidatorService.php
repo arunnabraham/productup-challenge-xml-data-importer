@@ -8,7 +8,6 @@ use Eclipxe\XmlSchemaValidator\SchemaValidator;
 use Exception;
 use Buzz\Browser;
 use Buzz\Client\Curl;
-use DOMDocument;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use XMLReader;
 
