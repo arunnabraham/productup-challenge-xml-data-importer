@@ -1,8 +1,11 @@
 <?php
 namespace Arunnabraham\XmlDataImporter\Service;
+
+use Arunnabraham\XmlDataImporter\Service\ExportIO\DisplayFormatIO;
+
 interface DataParserAdapterInterface {
 
-    public function processData(): string;
-    public function returnOutput(string $inputData): string;
+    public function processData($inputStream): bool;
+    public function returnExportOutput($exportLocation, $inputStream): string;
 
 }

@@ -26,6 +26,7 @@ function processJSON($outputDir, $filename, $sourceResource)
         if (!is_resource($sourceResource)) {
             throw new Exception('Invalid Source Resouce');
         }
+        rewind($sourceResource);
         while (!feof($sourceResource)) {
             $data = fgets($sourceResource);
             if ($isFirstSeek) {
@@ -55,6 +56,7 @@ function processCSV($outputDir, $filename, $sourceResource): bool
         if (!is_resource($sourceResource)) {
             throw new Exception('Invalid Source Resouce');
         }
+        rewind($sourceResource);
         while (!feof($sourceResource)) {
             $data = json_decode(fgets($sourceResource), true);
             if (!empty($data)) {
@@ -82,6 +84,7 @@ function exportData(DomNode $node, string $mode, string $outputDir, string $file
     $fp = fopen('php://memory', 'rw');
     processExport($node, $fp);
     rewind($fp);
+    file_put_contents($outputDir . '/' . $filename.'.ndjson',stream_get_contents($fp));
     $str = '';
     if ($mode === 'csv') {
         $status = processCSV($outputDir, $filename, $fp);
@@ -144,7 +147,6 @@ function processResultToStream(\DomNode|null $node, $fp, $reset = false): void
             } else {
                 $delimiter = $row > 0 ? PHP_EOL : '';
                 fputs($fp, $delimiter . json_encode($result));
-                //file_put_contents(__DIR__ . '/temp.ndjson', json_encode($result) . PHP_EOL, FILE_APPEND);
                 $column = 0;
                 $row++;
             }
