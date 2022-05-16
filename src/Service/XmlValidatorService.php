@@ -7,9 +7,10 @@ namespace Arunnabraham\XmlDataImporter\Service;
 use Eclipxe\XmlSchemaValidator\SchemaValidator;
 use Exception;
 use Buzz\Browser;
-use Buzz\Client\FileGetContents;
+use Buzz\Client\Curl;
+use DOMDocument;
 use Nyholm\Psr7\Factory\Psr17Factory;
-
+use XMLReader;
 
 class XmlValidatorService
 {
@@ -21,12 +22,15 @@ class XmlValidatorService
             $this->inputFile = $inputFile;
             $this->inputType = $inputType;
             $inputTypeValidate = $this->validateInputType();
-            if ($inputTypeValidate['status']) {
-                throw new Exception($inputTypeValidate['info']);
+            if (!$inputTypeValidate['status']) {
+                throw new \Exception($inputTypeValidate['info']);
             }
-            $xmlData = file_get_contents($inputFile);
-            $schemaValidator = SchemaValidator::createFromString($xmlData);
-            return $schemaValidator->validate();
+            $xml = new XMLReader;
+            $xml->open($this->inputFile);
+            $xml->setParserProperty(XMLReader::VALIDATE, true);
+           // $xmlData = file_get_contents($inputFile);
+           // $schemaValidator = SchemaValidator::createFromString($xmlData);
+            return $xml->isValid();
         } catch (Exception $e) {
             return false;
         }
@@ -41,19 +45,19 @@ class XmlValidatorService
                 'status' => true
             ] : [
                 'status' => false,
-                'Info' => 'Invalid File Input'
+                'info' => 'Invalid File Input'
             ])(),
 
             'remote' => (fn (): array => ($this->isRemoteFileExists()) ? [
                 'status' => true
             ] : [
                 'status' => false,
-                'Info' => 'Invalid Remote file Input'
+                'info' => 'Invalid Remote file Input'
             ])(),
 
             default => [
                 'status' => false,
-                'Info' => 'Unknown Input Type'
+                'info' => 'Unknown Input Type'
             ]
         };
     }
@@ -61,11 +65,13 @@ class XmlValidatorService
     private function isRemoteFileExists(): bool
     {
         try {
-            $client = new FileGetContents(new Psr17Factory());
+            $client = new Curl(new Psr17Factory());
             $browser = new Browser($client, new Psr17Factory());
             $response = $browser->get($this->inputFile);
-            return $response->getStatusCode() === '200' ? true : false;
+            //echo $response->getStatusCode(); exit;
+            return $response->getStatusCode() === 200 ? true : false;
         } catch (\Exception $e) {
+            return false;
         }
         return false;
     }

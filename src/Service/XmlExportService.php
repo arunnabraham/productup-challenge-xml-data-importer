@@ -6,24 +6,23 @@ namespace Arunnabraham\XmlDataImporter\Service;
 
 use Arunnabraham\XmlDataImporter\Service\DataParserAdapterInterface as ExportDataParserAdapterInterface;
 use Arunnabraham\XmlDataImporter\Service\XMLParser\ProcessXML;
-use Exception;
 
 class XmlExportService
 {
-    public $processMode;
+    private string $processMode;
     public function setFileProcessMode($processMode)
     {
-        $this->processMode;
+        $this->processMode = $processMode;
     }
 
-    public function exportData(ExportDataParserAdapterInterface $exportAdapter, string $outputDir, string $filename): string|bool
+    public function exportData(ExportDataParserAdapterInterface $exportAdapter, string $inputFile, string $outputDir, string $filename): string|bool
     {
         try {
             $reader = new \XMLReader;
-            $reader->open($this->inputFile);
+            $reader->open($inputFile);
             $fp = $this->getFileProcessMode();
             if (!is_resource($fp)) {
-                throw new Exception('Invalid Resource');
+                throw new \Exception('Invalid Resource');
             }
             while ($reader->read()) {
                 $node = $reader->expand();

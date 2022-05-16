@@ -8,13 +8,13 @@ class ProcessXML {
 
     public function processExport($node, $fp): void
     {
-        processResultToStream($node, $fp);
-        resetProcess();
+        $this->processResultToStream($node, $fp);
+        $this->resetProcess();
     }
 
     private function resetProcess()
     {
-        processResultToStream(null, null, true);
+        $this->processResultToStream(null, null, true);
     }
 
     private function processResultToStream(\DomNode|null $node, $fp, $reset = false): void
@@ -38,7 +38,7 @@ class ProcessXML {
 
                     if (!empty($children)) {
                         foreach ($children as $childNode) {
-                            processResultToStream($childNode, $fp);
+                            $this->processResultToStream($childNode, $fp);
                         }
                     }
                 }

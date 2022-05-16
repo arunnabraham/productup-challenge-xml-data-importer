@@ -4,14 +4,18 @@ declare(strict_types=1);
 
 namespace Arunnabraham\XmlDataImporter\Service;
 
-use Arunnabraham\XmlDataImporter\Service\Formats\CsvExporter;
+use Arunnabraham\XmlDataImporter\Service\Formats\{
+    CsvExporter,
+    JsonExporter
+};
 
 class XmlImportService
 {
 
     public string $outputDir;
     private DataParserAdapterInterface $exportDriver;
-    private $outputFilePrefix = 'data_';
+    private string $outputFilePrefix = 'data_';
+    private string $inputFile;
 
     const EXPORT_FORMATS = [
         'csv' => CsvExporter::class,
@@ -23,26 +27,32 @@ class XmlImportService
         try {
             $this->exportFormat = $exportFormat;
             $this->outputDir = $outputDir;
+
             $this->setDriver($this->exportFormat);
             if (empty($this->outputDir)) {
                 throw new \Exception('Invalid File Ouptut');
             }
             if ((new XmlValidatorService)->validateXml($inputFile, $inputType)) {
-              return $this->runExport();
+                $this->inputFile = $inputFile;
+                return $this->runExport();
             } else {
                 throw new \Exception('Invalid XML Input');
             }
         } catch (\Exception $e) {
+            return $e->getMessage();
         }
     }
 
     private function runExport(): string
     {
-        return (new XmlExportService)->exportData($this->exportDriver, $this->outputDir, $this->outputFilePrefix . '_' . uniqid() . '.' . strtolower($this->exportFormat));
+        //var_dump(env('PROCESS_MODE')); exit;
+        $exportService =  new XmlExportService;
+        $exportService->setFileProcessMode(env('PROCESS_MODE'));       
+        return $exportService->exportData($this->exportDriver, $this->inputFile, $this->outputDir, $this->outputFilePrefix . '_' . uniqid() . '.' . strtolower($this->exportFormat));
     }
 
     private function setDriver($format): void
     {
-        $this->exportDriver = self::EXPORT_FORMATS[$format];
+        $this->exportDriver = (new (self::EXPORT_FORMATS[strtolower($format)])());
     }
 }

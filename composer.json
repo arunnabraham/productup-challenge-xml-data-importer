@@ -4,6 +4,9 @@
     "type": "library",
     "license": "Unlicenced",
     "autoload": {
+        "files": [
+            "helpers/common.php"
+        ],
         "psr-4": {
             "Arunnabraham\\XmlDataImporter\\": "src/"
         }
@@ -17,7 +20,6 @@
     "require": {
         "symfony/console": "^6.0",
         "eclipxe/xmlschemavalidator": "^3.0",
-        "league/csv": "^9.8",
         "kriswallsmith/buzz": "^1.2",
         "nyholm/psr7": "^1.5",
         "symfony/dotenv": "^6.0"
