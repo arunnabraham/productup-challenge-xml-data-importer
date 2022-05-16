@@ -23,27 +23,6 @@ class XMLImportExportCommand extends Command
             ->addOption('inputtype', 't', InputOption::VALUE_REQUIRED, 'Specify what input type whether remote or local');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
-    {
-        $validate = $this->validateInputs($input);
-        if (!empty($validate)) {
-            $output->writeln(sprintf('<comment>Input Error:</comment>' . PHP_EOL . implode(PHP_EOL, $validate)));
-        } else {
-            $processImportExport = (new XmlImportService())->processImport(
-                $input->getArgument('exportformat'),
-                $input->getOption('inputfile'),
-                env('DEFAULT_OUTPUT_DIR_PATH'),
-                $input->getOption('inputtype')
-            );
-            if (str_contains($processImportExport, 'Error')) {
-                $output->writeln(sprintf('<comment>%s</comment>', $processImportExport));
-            } else {
-                $output->writeln(sprintf('<info>Export File: %s</info>', $processImportExport));
-            }
-        }
-        return 0;
-    }
-
     private function validateInputs(InputInterface $input)
     {
         $acceptedInputs = [
@@ -75,5 +54,26 @@ class XMLImportExportCommand extends Command
         }
 
         return $messages;
+    }
+
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
+        $validate = $this->validateInputs($input);
+        if (!empty($validate)) {
+            $output->writeln(sprintf('<comment>Input Error:</comment>' . PHP_EOL . implode(PHP_EOL, $validate)));
+        } else {
+            $processImportExport = (new XmlImportService())->processImport(
+                $input->getArgument('exportformat'),
+                $input->getOption('inputfile'),
+                env('DEFAULT_OUTPUT_DIR_PATH'),
+                $input->getOption('inputtype')
+            );
+            if (str_contains($processImportExport, 'Error')) {
+                $output->writeln(sprintf('<comment>%s</comment>', $processImportExport));
+            } else {
+                $output->writeln(sprintf('<info>Export File: %s</info>', $processImportExport));
+            }
+        }
+        return 0;
     }
 }

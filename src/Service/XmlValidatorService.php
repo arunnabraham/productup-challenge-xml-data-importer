@@ -9,27 +9,36 @@ use Exception;
 use Buzz\Browser;
 use Buzz\Client\Curl;
 use Nyholm\Psr7\Factory\Psr17Factory;
+use Psr\Http\Message\ResponseInterface;
 use XMLReader;
 
 class XmlValidatorService
 {
     private string $inputFile;
     private string $inputType;
+    private ResponseInterface $remoteFileResponse;
     public function validateXml(string $inputFile, string $inputType): bool
     {
         try {
             $this->inputFile = $inputFile;
             $this->inputType = $inputType;
+            if ($inputType === 'remote') {
+                $response = $this->getRemoteFile();
+                $this->remoteFileResponse = $response;
+                if ($this->remoteFileResponse instanceof ResponseInterface) {
+                    $xmlData = $this->remoteFileResponse->getBody()->getContents();
+                } else {
+                    $xmlData = '';
+                }
+            } else {
+                $xmlData = file_get_contents($this->inputFile);
+            }
             $inputTypeValidate = $this->validateInputType();
             if (!$inputTypeValidate['status']) {
                 throw new \Exception($inputTypeValidate['info']);
             }
-            $xml = new XMLReader;
-            $xml->open($this->inputFile);
-            $xml->setParserProperty(XMLReader::VALIDATE, true);
-           // $xmlData = file_get_contents($inputFile);
-           // $schemaValidator = SchemaValidator::createFromString($xmlData);
-            return $xml->isValid();
+            $schemaValidator = SchemaValidator::createFromString($xmlData);
+            return $schemaValidator->validate();
         } catch (Exception $e) {
             return false;
         }
@@ -61,16 +70,23 @@ class XmlValidatorService
         };
     }
 
-    private function isRemoteFileExists(): bool
+    private function getRemoteFile(): ResponseInterface|bool
     {
         try {
             $client = new Curl(new Psr17Factory());
             $browser = new Browser($client, new Psr17Factory());
             $response = $browser->get($this->inputFile);
-            //echo $response->getStatusCode(); exit;
-            return $response->getStatusCode() === 200 ? true : false;
+            return $response;
         } catch (\Exception $e) {
             return false;
+        }
+        return false;
+    }
+
+    private function isRemoteFileExists()
+    {
+        if ($this->remoteFileResponse instanceof ResponseInterface) {
+            return $this->remoteFileResponse->getStatusCode() === 200 ? true : false;
         }
         return false;
     }

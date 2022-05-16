@@ -1,25 +1,3 @@
 #!/usr/bin/php
 <?php
-
-require_once __DIR__ . '/vendor/autoload.php';
-
-use Arunnabraham\XmlDataImporter\Commands\XMLImportExportCommand;
-use Arunnabraham\XmlDataImporter\Service\XmlImportService;
-use Symfony\Component\Console\Application;
-use Symfony\Component\Dotenv\Dotenv;
-
-$dotenv = new Dotenv();
-$dotenv->load(__DIR__.'/.env');
-
-$xmli = new XmlImportService;
-$inputFile = 'https://bangscience.org/tag/coffee/feed/index.xml';
-$exportFormat = 'csv';
-$inputType = 'remote';
-
-/* $output = $xmli->processImport($exportFormat, $inputFile, env('DEFAULT_OUTPUT_DIR_PATH'), $inputType);
-var_dump($output).PHP_EOL; */
-$app = new Application();
-$app->add(new XMLImportExportCommand());
-// ... register commands
-
-$app->run();
+require_once __DIR__ . '/bootstrap/init.php';

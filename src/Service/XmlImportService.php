@@ -45,7 +45,6 @@ class XmlImportService
 
     private function runExport(): string
     {
-        //var_dump(env('PROCESS_MODE')); exit;
         $exportService =  new XmlExportService;
         $exportService->setFileProcessMode(env('PROCESS_MODE'));       
         return $exportService->exportData($this->exportDriver, $this->inputFile, $this->outputDir, $this->outputFilePrefix . '_' . uniqid() . '.' . strtolower($this->exportFormat));
