@@ -8,9 +8,9 @@ use Eclipxe\XmlSchemaValidator\SchemaValidator;
 use Exception;
 use Buzz\Browser;
 use Buzz\Client\Curl;
+use Monolog\Logger;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Psr\Http\Message\ResponseInterface;
-use XMLReader;
 
 class XmlValidatorService
 {
@@ -40,6 +40,7 @@ class XmlValidatorService
             $schemaValidator = SchemaValidator::createFromString($xmlData);
             return $schemaValidator->validate();
         } catch (Exception $e) {
+            appLogger('error', 'Exception: ' . $e->getMessage() . PHP_EOL . 'Trace: ' . $e->getTraceAsString());
             return false;
         }
         return false;
@@ -78,8 +79,10 @@ class XmlValidatorService
             $response = $browser->get($this->inputFile);
             return $response;
         } catch (\Exception $e) {
+            appLogger('error', 'Exception: ' . $e->getMessage() . PHP_EOL . 'Trace: ' . $e->getTraceAsString());
             return false;
         }
+        appLogger('info', 'Unknown Error: line ' . __LINE__);
         return false;
     }
 

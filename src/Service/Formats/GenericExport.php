@@ -41,6 +41,7 @@ abstract class GenericExport implements
             rewind($sourceResource);
             $this->coreFormatAndWrite($sourceResource, $destinationResource,);
         } catch (\Exception $e) {
+            appLogger('error', 'Exception: ' . $e->getMessage() . PHP_EOL . 'Trace: ' . $e->getTraceAsString());
             return false;
         }
         fclose($destinationResource);

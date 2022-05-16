@@ -22,7 +22,8 @@
         "eclipxe/xmlschemavalidator": "^3.0",
         "kriswallsmith/buzz": "^1.2",
         "nyholm/psr7": "^1.5",
-        "symfony/dotenv": "^6.0"
+        "symfony/dotenv": "^6.0",
+        "monolog/monolog": "^2.6.0"
     },
     "config": {
         "allow-plugins": {

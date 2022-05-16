@@ -11,19 +11,23 @@ class JsonExporter extends GenericExport
 
     public function coreFormatAndWrite($sourceResource, $destinationResource = null, $destinatonPath = ''): void
     {
-        $isFirstSeek = true;
-        while (!feof($sourceResource)) {
-            $data = fgets($sourceResource);
-            if ($isFirstSeek) {
-                $delimiter = '[';
-            } else {
-                $delimiter = ',';
+        try {
+            $isFirstSeek = true;
+            while (!feof($sourceResource)) {
+                $data = fgets($sourceResource);
+                if ($isFirstSeek) {
+                    $delimiter = '[';
+                } else {
+                    $delimiter = ',';
+                }
+                if ($destinationResource !== null) {
+                    fwrite($destinationResource, $delimiter . $data);
+                }
+                $isFirstSeek = false;
             }
-            if ($destinationResource !== null) {
-                fwrite($destinationResource, $delimiter . $data);
-            }
-            $isFirstSeek = false;
+            fwrite($destinationResource, ']');
+        } catch (\Exception $e) {
+            appLogger('error', 'Exception: ' . $e->getMessage() . PHP_EOL . 'Trace: ' . $e->getTraceAsString());
         }
-        fwrite($destinationResource, ']');
     }
 }

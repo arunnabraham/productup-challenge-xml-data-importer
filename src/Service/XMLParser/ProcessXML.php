@@ -56,9 +56,9 @@ class ProcessXML {
                 }
             }
         } catch (\Exception $e) {
-            //echo 'Error Found';
+            appLogger('error', 'Exception: '.$e->getMessage().PHP_EOL.'Trace: '.$e->getTraceAsString());
         } finally {
-            //echo 'Process end';
+            appLogger('info', 'Process Ended');
         }
         return;
     }

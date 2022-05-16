@@ -30,11 +30,14 @@ class XmlExportService
                 $reader->next();
             }
             $reader->close();
+            if (!is_dir($outputDir)) {
+                mkdir($outputDir, 0755);
+            }
             $destination = $exportAdapter->returnExportOutput($outputDir . '/' . $filename, $fp);
             fclose($fp);
             return $destination;
         } catch (\Exception $e) {
-            //
+            appLogger('error', 'Exception: '.$e->getMessage().PHP_EOL.'Trace: '.$e->getTraceAsString());
             return false;
         }
         return false;

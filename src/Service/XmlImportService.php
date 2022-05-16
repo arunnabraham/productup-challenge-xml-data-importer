@@ -8,6 +8,7 @@ use Arunnabraham\XmlDataImporter\Service\Formats\{
     CsvExporter,
     JsonExporter
 };
+use Monolog\Logger;
 
 class XmlImportService
 {
@@ -39,14 +40,15 @@ class XmlImportService
                 throw new \Exception('Invalid XML Input');
             }
         } catch (\Exception $e) {
-            return 'Error: '.$e->getMessage();
+            appLogger('error', 'Exception: '.$e->getMessage().PHP_EOL.'Trace: '.$e->getTraceAsString());
+            return 'Error: ' . $e->getMessage();
         }
     }
 
     private function runExport(): string
     {
         $exportService =  new XmlExportService;
-        $exportService->setFileProcessMode(env('PROCESS_MODE'));       
+        $exportService->setFileProcessMode(env('PROCESS_MODE'));
         return $exportService->exportData($this->exportDriver, $this->inputFile, $this->outputDir, $this->outputFilePrefix . '_' . uniqid() . '.' . strtolower($this->exportFormat));
     }
 
