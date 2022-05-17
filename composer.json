@@ -1,0 +1,36 @@
+{
+    "name": "arunnabraham/xml-data-importer",
+    "description": "A Simple Applictaion to import xml data from local or remote to defined formats",
+    "type": "library",
+    "license": "Unlicenced",
+    "autoload": {
+        "files": [
+            "helpers/common.php"
+        ],
+        "psr-4": {
+            "Arunnabraham\\XmlDataImporter\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Arun Abraham",
+            "email": "arunnabraham@gmail.com"
+        }
+    ],
+    "require": {
+        "symfony/console": "^6.0",
+        "eclipxe/xmlschemavalidator": "^3.0",
+        "kriswallsmith/buzz": "^1.2",
+        "nyholm/psr7": "^1.5",
+        "symfony/dotenv": "^6.0",
+        "monolog/monolog": "^2.6.0"
+    },
+    "config": {
+        "allow-plugins": {
+            "symfony/runtime": true
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.5"
+    }
+}

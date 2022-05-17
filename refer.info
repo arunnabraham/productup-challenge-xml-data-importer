@@ -1,0 +1,8 @@
+example file: https://bangscience.org/tag/coffee/feed/index.xml
+Welcome to XML Importer!!
+Please input your file name (use local path or http as input):
+Select format
+1. JSON
+2. Google Sheet
+3. SQLite
+commandline:
