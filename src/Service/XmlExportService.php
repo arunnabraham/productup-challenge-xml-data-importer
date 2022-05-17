@@ -35,7 +35,7 @@ class XmlExportService
             }
             $destination = $exportAdapter->returnExportOutput($outputDir . '/' . $filename, $fp);
             fclose($fp);
-            return $destination;
+            return env('DEFAULT_RETURN_OUTPUT_DIR_PATH') . '/' . $filename;
         } catch (\Exception $e) {
             appLogger('error', 'Exception: '.$e->getMessage().PHP_EOL.'Trace: '.$e->getTraceAsString());
             return false;

@@ -16,8 +16,8 @@ if (!function_exists('env')) {
 if (!function_exists('appLogger')) {
     function appLogger($logLevel, string $message)
     {
-        var_dump(env());
-       /* $logger = new Logger('applog');
+        //var_dump(env());
+        $logger = new Logger('applog');
         $logDir = env('APP_LOG_DIR');
         $logFile = env('APP_LOG_FILENAME');
         if (!is_dir($logDir)) {
@@ -27,6 +27,6 @@ if (!function_exists('appLogger')) {
             touch($logDir . '/' . $logFile);
         }
         $logger->pushHandler(new StreamHandler(realpath($logDir . '/' . $logFile), LogLevel::DEBUG));
-        $logger->$logLevel($message); */
+        $logger->$logLevel($message);
     }
 }
