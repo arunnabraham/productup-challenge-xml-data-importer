@@ -21,6 +21,8 @@ if (!function_exists('appLogger')) {
         $logFile = env('APP_LOG_FILENAME');
         if (!is_dir($logDir)) {
             mkdir($logDir, 0755);
+        }
+        if (realpath($logDir . '/' . $logFile) === false) {
             touch($logDir . '/' . $logFile);
         }
         $logger->pushHandler(new StreamHandler(realpath($logDir . '/' . $logFile), LogLevel::DEBUG));
