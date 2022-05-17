@@ -15,4 +15,3 @@ Example:
 <code> ./run export csv -t local -i /rootpath/xml-samples/employee.xml</code>
 
  <code> ./run export csv -t remote -i http://a.cdn.searchspring.net/help/feeds/searchspring.xml </code>
-
