@@ -1,6 +1,10 @@
 # ProductUp Challenge XML Data Importer
 A console based application to parse XML data and converts to various formats Mainly JSON, CSV etc. Easly implement other formats with reusable code.
 
+## Initial Setup
+
+chmod +x ./run
+
 # Dev mode How to Run
 ## Arguments 
 
@@ -15,3 +19,10 @@ Example:
 <code> ./run export csv -t local -i /rootpath/xml-samples/employee.xml</code>
 
  <code> ./run export csv -t remote -i http://a.cdn.searchspring.net/help/feeds/searchspring.xml </code>
+ 
+ 
+ ## System Requirements
+ 
+ Tested in Linux Environment
+ 
+ PHP version 8.1 with CURL enabled
