@@ -23,24 +23,24 @@ class XmlImportService
         'json' => JsonExporter::class
     ];
 
-    public function processImport($exportFormat, string $inputFile, string $outputDir, string $inputType = 'local'): string
+    public function processImport($exportFormat, string $outputDir): string
     {
         try {
             $this->exportFormat = $exportFormat;
             $this->outputDir = $outputDir;
-
             $this->setDriver($this->exportFormat);
             if (empty($this->outputDir)) {
                 throw new \Exception('Invalid File Ouptut');
             }
-            if ((new XmlValidatorService)->validateXml($inputFile, $inputType)) {
-                $this->inputFile = $inputFile;
-                return $this->runExport();
+            $inputStream = $this->recieveAndWriteTempOfInputStream();
+            $this->inputFile = stream_get_meta_data($inputStream)['uri'];
+            if ((new XmlValidatorService)->validateXml($this->inputFile)) {
+            return $this->runExport();
             } else {
                 throw new \Exception('Invalid XML Input');
             }
         } catch (\Exception $e) {
-            appLogger('error', 'Exception: '.$e->getMessage().PHP_EOL.'Trace: '.$e->getTraceAsString());
+            appLogger('error', 'Exception: ' . $e->getMessage() . PHP_EOL . 'Trace: ' . $e->getTraceAsString());
             return 'Error: ' . $e->getMessage();
         }
     }
@@ -50,6 +50,20 @@ class XmlImportService
         $exportService =  new XmlExportService;
         $exportService->setFileProcessMode(env('PROCESS_MODE'));
         return $exportService->exportData($this->exportDriver, $this->inputFile, $this->outputDir, $this->outputFilePrefix . '_' . uniqid() . '.' . strtolower($this->exportFormat));
+    }
+
+    private function recieveAndWriteTempOfInputStream()
+    {
+        $inputStream = STDIN;
+        //if (stream_select([&$inputStream], null, null, 0) === 1) {
+            $tmpStream = tmpfile();
+            while (!feof($inputStream)) {
+                fwrite($tmpStream, fread(STDIN, 1), 1);
+            }
+            fclose(STDIN);
+            return $tmpStream;
+       // }
+        return null;
     }
 
     private function setDriver($format): void

@@ -18,9 +18,9 @@ class XMLImportExportCommand extends Command
         $this->setName('export')
             ->setDescription('Runs XML Export to various formats')
             // ->setHelp('Demonstration of custom commands created by Symfony Console component.')
-            ->addArgument('exportformat', InputArgument::REQUIRED, 'Input export format eg: csv or json')
-            ->addOption('inputfile', 'i', InputOption::VALUE_REQUIRED, 'Input file path')
-            ->addOption('inputtype', 't', InputOption::VALUE_REQUIRED, 'Specify what input type whether remote or local');
+            ->addArgument('exportformat', InputArgument::REQUIRED, 'Input export format eg: csv or json');
+    //        ->addOption('inputfile', 'i', InputOption::VALUE_REQUIRED, 'Input file path')
+    //        ->addOption('inputtype', 't', InputOption::VALUE_REQUIRED, 'Specify what input type whether remote or local');
     }
 
     private function validateInputs(InputInterface $input)
@@ -29,28 +29,14 @@ class XMLImportExportCommand extends Command
             'exportformat' =>  [
                 'csv',
                 'json',
-            ],
-            'inputtype' => [
-                'remote',
-                'local',
             ]
         ];
 
         $exportFormat = $acceptedInputs['exportformat'];
-        $inputType = $acceptedInputs['inputtype'];
         $messages = [];
 
         if (in_array($input->getArgument('exportformat'), $exportFormat, true) === false) {
             array_push($messages, '<error>Invalid Argument Export Format</error>');
-        }
-
-        if (in_array($input->getOption('inputtype'), $inputType, true) === false) {
-            array_push($messages, '<error>Invalid Input type</error>');
-        }
-
-        if(empty($input->getOption('inputfile')))
-        {
-            array_push($messages, '<error>Unkown input file</error>');
         }
 
         return $messages;
@@ -64,9 +50,7 @@ class XMLImportExportCommand extends Command
         } else {
             $processImportExport = (new XmlImportService())->processImport(
                 $input->getArgument('exportformat'),
-                $input->getOption('inputfile'),
-                env('DEFAULT_OUTPUT_DIR_PATH'),
-                $input->getOption('inputtype')
+                env('DEFAULT_OUTPUT_DIR_PATH')
             );
             if (str_contains($processImportExport, 'Error')) {
                 $output->writeln(sprintf('<comment>%s</comment>', $processImportExport));

@@ -15,7 +15,7 @@ class XmlExportService
         $this->processMode = $processMode;
     }
 
-    public function exportData(ExportDataParserAdapterInterface $exportAdapter, string $inputFile, string $outputDir, string $filename): string|bool
+    public function exportData(ExportDataParserAdapterInterface $exportAdapter, $inputFile, string $outputDir, string $filename): string|bool
     {
         try {
             $reader = new \XMLReader;
@@ -35,9 +35,9 @@ class XmlExportService
             }
             $destination = $exportAdapter->returnExportOutput($outputDir . '/' . $filename, $fp);
             fclose($fp);
-            return env('DEFAULT_RETURN_OUTPUT_DIR_PATH') . '/' . $filename;
+            return $destination;
         } catch (\Exception $e) {
-            appLogger('error', 'Exception: '.$e->getMessage().PHP_EOL.'Trace: '.$e->getTraceAsString());
+            appLogger('error', 'Exception: ' . $e->getMessage() . PHP_EOL . 'Trace: ' . $e->getTraceAsString());
             return false;
         }
         return false;
