@@ -3,6 +3,8 @@ A console based application to parse XML data and converts to various formats Ma
 
 ## Initial Setup
 
+composer install
+
 chmod +x ./run
 
 # Dev mode How to Run
