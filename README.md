@@ -18,9 +18,13 @@ export csv|json
 
 Example:
 
-<code> ./run export csv -t local -i /rootpath/xml-samples/employee.xml</code>
+Remote option: 
 
- <code> ./run export csv -t remote -i http://a.cdn.searchspring.net/help/feeds/searchspring.xml </code>
+<code> curl -s http://a.cdn.searchspring.net/help/feeds/searchspring.xml | php ./run export csv </code>
+<code> curl -s http://a.cdn.searchspring.net/help/feeds/searchspring.xml | php ./run export json </code>
+
+ <code> cat path/filename.xml | php ./run export csv </code>
+  <code> cat path/filename.xml | php ./run export json </code>
  
  
  ## System Requirements
