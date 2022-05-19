@@ -1,5 +1,5 @@
 # ProductUp Challenge XML Data Importer
-A console based application to parse XML data and converts to various formats Mainly JSON, CSV etc. Easly implement other formats with reusable code.
+A console based application to parse XML data and converts to various formats Mainly JSON, CSV etc. Easly implement other formats with reusable/extensible code.
 
 ## Initial Setup
 
