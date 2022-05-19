@@ -24,7 +24,7 @@ class XmlImportService
         'json' => JsonExporter::class
     ];
 
-    public function processImport($exportFormat, string $outputDir): string
+    public function processImport(string $exportFormat, string $outputDir): string
     {
         try {
             $this->exportFormat = $exportFormat;
@@ -33,7 +33,7 @@ class XmlImportService
             if (empty($this->outputDir)) {
                 throw new \Exception('Invalid File Ouptut');
             }
-            $inputStream = $this->recieveAndWriteTempOfInputStream();
+            $inputStream = (new ImportStdinHandler)->recieveAndWriteTempOfInputStream();
             if (!is_resource($inputStream)) {
                 throw new Exception('Uknown input');
             }
@@ -58,20 +58,6 @@ class XmlImportService
         $exportService =  new XmlExportService;
         $exportService->setFileProcessMode(env('PROCESS_MODE'));
         return $exportService->exportData($this->exportDriver, $this->inputFile, $this->outputDir, $this->outputFilePrefix . '_' . uniqid() . '.' . strtolower($this->exportFormat));
-    }
-
-    private function recieveAndWriteTempOfInputStream()
-    {
-        $inputStream = STDIN;
-        //if (stream_select([&$inputStream], null, null, 0) === 1) {
-        $tmpStream = tmpfile();
-        while (!feof($inputStream)) {
-            fwrite($tmpStream, fread(STDIN, 1), 1);
-        }
-        fclose(STDIN);
-        return $tmpStream;
-        // }
-        return null;
     }
 
     private function setDriver($format): void
