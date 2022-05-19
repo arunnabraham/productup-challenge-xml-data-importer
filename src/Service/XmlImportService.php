@@ -9,7 +9,6 @@ use Arunnabraham\XmlDataImporter\Service\Formats\{
     JsonExporter
 };
 use Exception;
-use Monolog\Logger;
 
 class XmlImportService
 {

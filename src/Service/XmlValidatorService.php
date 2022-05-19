@@ -6,7 +6,6 @@ namespace Arunnabraham\XmlDataImporter\Service;
 
 use Eclipxe\XmlSchemaValidator\SchemaValidator;
 use Exception;
-use Psr\Http\Message\ResponseInterface;
 
 class XmlValidatorService
 {
