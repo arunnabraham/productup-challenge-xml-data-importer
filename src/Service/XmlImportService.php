@@ -8,6 +8,7 @@ use Arunnabraham\XmlDataImporter\Service\Formats\{
     CsvExporter,
     JsonExporter
 };
+use Exception;
 use Monolog\Logger;
 
 class XmlImportService
@@ -33,9 +34,16 @@ class XmlImportService
                 throw new \Exception('Invalid File Ouptut');
             }
             $inputStream = $this->recieveAndWriteTempOfInputStream();
+            if (!is_resource($inputStream)) {
+                throw new Exception('Uknown input');
+            }
             $this->inputFile = stream_get_meta_data($inputStream)['uri'];
             if ((new XmlValidatorService)->validateXml($this->inputFile)) {
-            return $this->runExport();
+                $exportResponse = $this->runExport();
+                if (!is_string($exportResponse)) {
+                    throw new Exception('Unknow Error in Export');
+                }
+                return (new DisplayExportOutputFileFormat)->response($exportResponse);
             } else {
                 throw new \Exception('Invalid XML Input');
             }
@@ -56,13 +64,13 @@ class XmlImportService
     {
         $inputStream = STDIN;
         //if (stream_select([&$inputStream], null, null, 0) === 1) {
-            $tmpStream = tmpfile();
-            while (!feof($inputStream)) {
-                fwrite($tmpStream, fread(STDIN, 1), 1);
-            }
-            fclose(STDIN);
-            return $tmpStream;
-       // }
+        $tmpStream = tmpfile();
+        while (!feof($inputStream)) {
+            fwrite($tmpStream, fread(STDIN, 1), 1);
+        }
+        fclose(STDIN);
+        return $tmpStream;
+        // }
         return null;
     }
 

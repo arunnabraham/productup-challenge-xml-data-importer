@@ -55,7 +55,8 @@ class XMLImportExportCommand extends Command
             if (str_contains($processImportExport, 'Error')) {
                 $output->writeln(sprintf('<comment>%s</comment>', $processImportExport));
             } else {
-                $output->writeln(sprintf('<info>Export File: %s</info>', $processImportExport));
+                $output->writeln('<info>Export File:</info>'.PHP_EOL);
+                $output->writeln(sprintf('%s', $processImportExport.PHP_EOL));
             }
         }
         return 0;
