@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Arunnabraham\XmlDataImporter\Service;
+namespace Arunnabraham\XmlDataImporter\Service\XMLImportExport;
 
-use Arunnabraham\XmlDataImporter\Service\DataParserAdapterInterface as ExportDataParserAdapterInterface;
+use Arunnabraham\XmlDataImporter\Service\ExportDriver\DataParserAdapterInterface as ExportDataParserAdapterInterface;
 use Arunnabraham\XmlDataImporter\Service\XMLParser\ProcessXML;
 
 class XmlExportService

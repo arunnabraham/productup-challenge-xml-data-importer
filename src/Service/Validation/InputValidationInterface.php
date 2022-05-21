@@ -5,7 +5,7 @@ namespace Arunnabraham\XmlDataImporter\Service\Validation;
 use Symfony\Component\Console\Input\InputInterface;
 
 interface InputValidationInterface {
-    public function validateArguments(InputInterface $input):void;
-    public function setValidatorConfig(array $config): void;
-    public function validate(): bool;
+    public function validateArguments(InputInterface $input):InputValidationInterface;
+    public function isValid(): bool;
+    public function getValidationErrorMessages(): array;
 }

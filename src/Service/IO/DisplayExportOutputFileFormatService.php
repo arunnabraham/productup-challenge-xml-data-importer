@@ -1,8 +1,8 @@
 <?php
 declare(strict_types=1);
-namespace Arunnabraham\XmlDataImporter\Service;
+namespace Arunnabraham\XmlDataImporter\Service\IO;
 
-class DisplayExportOutputFileFormat
+class DisplayExportOutputFileFormatService
 {
     public function response(string $fileLocation): string
     {

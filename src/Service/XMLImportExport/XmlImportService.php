@@ -2,12 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Arunnabraham\XmlDataImporter\Service;
+namespace Arunnabraham\XmlDataImporter\Service\XMLImportExport;
 
+use Arunnabraham\XmlDataImporter\Service\ExportDriver\DataParserAdapterInterface;
 use Arunnabraham\XmlDataImporter\Service\Formats\{
     CsvExporter,
     JsonExporter
 };
+use Arunnabraham\XmlDataImporter\Service\IO\{
+    DisplayExportOutputFileFormatService,
+    StdinFileHandlerService
+};
+
 use Exception;
 
 class XmlImportService
@@ -28,11 +34,11 @@ class XmlImportService
         try {
             $this->exportFormat = $exportFormat;
             $this->outputDir = $outputDir;
-            $this->setDriver($this->exportFormat);
+            $this->setExportDriver($this->exportFormat);
             if (empty($this->outputDir)) {
                 throw new \Exception('Invalid File Ouptut');
             }
-            $inputStream = (new ImportStdinHandler)->recieveAndWriteTempOfInputStream();
+            $inputStream = (new StdinFileHandlerService)->recieveAndWriteTempOfInputStream();
             if (!is_resource($inputStream)) {
                 throw new Exception('Uknown input');
             }
@@ -42,7 +48,7 @@ class XmlImportService
                 if (!is_string($exportResponse)) {
                     throw new Exception('Unknow Error in Export');
                 }
-                return (new DisplayExportOutputFileFormat)->response($exportResponse);
+                return (new DisplayExportOutputFileFormatService)->response($exportResponse);
             } else {
                 throw new \Exception('Invalid XML Input');
             }
@@ -59,7 +65,7 @@ class XmlImportService
         return $exportService->exportData($this->exportDriver, $this->inputFile, $this->outputDir, $this->outputFilePrefix . '_' . uniqid() . '.' . strtolower($this->exportFormat));
     }
 
-    private function setDriver($format): void
+    private function setExportDriver($format): void
     {
         $this->exportDriver = (new (self::EXPORT_FORMATS[strtolower($format)])());
     }

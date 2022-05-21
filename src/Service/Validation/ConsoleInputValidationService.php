@@ -6,7 +6,7 @@ namespace Arunnabraham\XmlDataImporter\Service\Validation;
 
 use Symfony\Component\Console\Input\InputInterface;
 
-class ConsoleInputValidationService
+class ConsoleInputValidationService implements InputValidationInterface
 {
     private InputValidatorInterface $validationConfig;
     private array $invalidInfo = [];
@@ -15,7 +15,7 @@ class ConsoleInputValidationService
     {
         $this->validationConfig = $validationConfig;
     }
-    public function validateArguments(InputInterface $input): ConsoleInputValidationService
+    public function validateArguments(InputInterface $input): InputValidationInterface
     {
         try {
             $validations = [];

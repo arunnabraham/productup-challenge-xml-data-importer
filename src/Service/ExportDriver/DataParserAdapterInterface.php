@@ -1,5 +1,5 @@
 <?php
-namespace Arunnabraham\XmlDataImporter\Service;
+namespace Arunnabraham\XmlDataImporter\Service\ExportDriver;
 
 interface DataParserAdapterInterface {
 

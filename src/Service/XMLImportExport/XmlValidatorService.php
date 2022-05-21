@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Arunnabraham\XmlDataImporter\Service;
+namespace Arunnabraham\XmlDataImporter\Service\XMLImportExport;
 
 use Eclipxe\XmlSchemaValidator\SchemaValidator;
 use Exception;
 
 class XmlValidatorService
 {
-    public function validateXml($inputFile): bool
+    public function validateXml(string $inputFile): bool
     {
         try {
             $xmlData = file_get_contents($inputFile);

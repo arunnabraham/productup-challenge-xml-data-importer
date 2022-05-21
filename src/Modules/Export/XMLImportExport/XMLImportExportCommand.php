@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Arunnabraham\XmlDataImporter\Modules\Export\XMLImportExport;
 
 use Arunnabraham\XmlDataImporter\Service\Validation\ConsoleInputValidationService;
-use Arunnabraham\XmlDataImporter\Service\XmlImportService;
+use Arunnabraham\XmlDataImporter\Service\XMLImportExport\XmlImportService;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;

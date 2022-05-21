@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Arunnabraham\XmlDataImporter\Service\Formats;
 
-use Arunnabraham\XmlDataImporter\Service\DataParserAdapterInterface;
+use Arunnabraham\XmlDataImporter\Service\ExportDriver\DataParserAdapterInterface as ExportDriverDataParserAdapterInterface;
 
 abstract class GenericExport implements
-    DataParserAdapterInterface,
+    ExportDriverDataParserAdapterInterface,
     ExportCoreFormatInterface
 {
     protected string $exportFileLocation;
