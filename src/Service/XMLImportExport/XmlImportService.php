@@ -45,6 +45,10 @@ class XmlImportService
             $this->inputFile = stream_get_meta_data($inputStream)['uri'];
             if ((new XmlValidatorService)->validateXml($this->inputFile)) {
                 $exportResponse = $this->runExport();
+
+                if (is_resource($inputStream)) {
+                    fclose($inputStream);
+                }
                 if (!is_string($exportResponse)) {
                     throw new Exception('Unknow Error in Export');
                 }

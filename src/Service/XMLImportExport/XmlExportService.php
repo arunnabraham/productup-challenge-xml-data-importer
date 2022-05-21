@@ -29,7 +29,7 @@ class XmlExportService
                 (new ProcessXML())->processExport($node, $fp);
                 $reader->next();
             }
-            $reader->close();
+            //$reader->close();
             if (!is_dir($outputDir)) {
                 mkdir($outputDir, 0755);
             }
