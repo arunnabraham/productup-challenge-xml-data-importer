@@ -10,11 +10,7 @@ chmod +x ./run
 # Dev mode How to Run
 ## Arguments 
 
-export csv|json
-
--t [input Type] local|remote
-
--i [input file path] http(s) | /filepath
+<file stream stdin> | php ./run export <format>
 
 Example:
 
