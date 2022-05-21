@@ -1,9 +1,7 @@
 <?php
 declare(strict_types=1);
 namespace Arunnabraham\XmlDataImporter\Service\XMLParser;
-
-
-
+use function appLogger;
 class ProcessXML {
 
     public function processExport($node, $fp): void

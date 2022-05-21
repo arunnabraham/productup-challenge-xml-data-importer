@@ -1,6 +1,7 @@
 <?php
 
-use Arunnabraham\XmlDataImporter\Commands\XMLImportExportCommand;
+use Arunnabraham\XmlDataImporter\Module\Export\XMLImportExport\XMLImportExportCommand;
+use Arunnabraham\XmlDataImporter\Modules\Export\XMLImportExport\XMLImportExportCommand as XMLImportExportXMLImportExportCommand;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Dotenv\Dotenv;
 
@@ -19,5 +20,5 @@ if (env('APP_MODE') === 'prod') {
 
 /** LOAD CONSOLE APP **/
 $app = new Application();
-$app->add(new XMLImportExportCommand());
+$app->add(new XMLImportExportXMLImportExportCommand());
 $app->run();
