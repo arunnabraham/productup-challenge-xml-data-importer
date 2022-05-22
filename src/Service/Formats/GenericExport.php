@@ -11,7 +11,7 @@ abstract class GenericExport implements
     ExportCoreFormatInterface
 {
     protected string $exportFileLocation;
-    public function returnExportOutput($exportLocation, $inputResource): string
+    public function returnExportOutput(string $exportLocation, $inputResource): string
     {
         $this->exportFileLocation = $exportLocation;
         if ($this->processData($inputResource)) {
