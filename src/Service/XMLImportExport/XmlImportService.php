@@ -63,9 +63,9 @@ class XmlImportService
     }
 
     /**
-     * @return false|string
+     * @return false|string|null
      */
-    private function runExport(): false|string
+    private function runExport(): false|string|null
     {
         $exportService =  new XmlExportService;
         $exportService->setFileProcessMode(env('PROCESS_MODE'));

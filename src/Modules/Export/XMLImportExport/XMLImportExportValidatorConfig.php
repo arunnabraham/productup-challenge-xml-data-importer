@@ -12,7 +12,7 @@ class XMLImportExportValidatorConfig implements InputValidatorInterface
     /**
      * @return static
      */
-    public function definedValidatonSchema(): XMLImportExportValidatorConfig
+    public function definedValidatonSchema(): static
     {
         $this->schema = [
             //Input Category

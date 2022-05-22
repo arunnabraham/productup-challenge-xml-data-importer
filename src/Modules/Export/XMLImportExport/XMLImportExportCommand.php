@@ -17,7 +17,7 @@ class XMLImportExportCommand extends Command
     /**
      * @return void
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this->setName('export')
             ->setDescription('Runs XML Export to various formats')

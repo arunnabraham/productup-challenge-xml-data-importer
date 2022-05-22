@@ -6,6 +6,6 @@ namespace Arunnabraham\XmlDataImporter\Service\Validation;
 
 interface InputValidatorInterface
 {
-    public function definedValidatonSchema(): InputValidatorInterface;
+    public function definedValidatonSchema(): static;
     public function getSchema();
 }
