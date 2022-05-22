@@ -1,7 +1,13 @@
 <?php
+
 declare(strict_types=1);
+
 namespace Arunnabraham\XmlDataImporter\Service\XMLParser;
-class ProcessXML {
+
+use Arunnabraham\XmlDataImporter\Service\Metadata\WriteMetadataNdJSONService;
+
+class ProcessXML
+{
 
     public function processExport($node, $fp): void
     {
@@ -45,25 +51,18 @@ class ProcessXML {
                     $result[$nodePath['basename']] = $node->nodeValue;
                     $column++;
                 } else {
-                    $this->writeMetadata($fp, $row, $result);
+                    (new WriteMetadataNdJSONService($row, $result))
+                        ->writeRowDataToStream($fp);
                     $column = 0;
                     $row++;
                 }
             }
         } catch (\Exception $e) {
-            appLogger('error', 'Exception: '.$e->getMessage().PHP_EOL.'Trace: '.$e->getTraceAsString());
+            appLogger('error', 'Exception: ' . $e->getMessage() . PHP_EOL . 'Trace: ' . $e->getTraceAsString());
         } finally {
             appLogger('info', 'Process Ended');
         }
         return;
-    }
-
-    public function writeMetadata($fp, $row, $result): void
-    {
-        // Metadata is ndjson format.
-        // refer: http://ndjson.org/
-        $delimiter = $row > 0 ? PHP_EOL : '';
-        fputs($fp, $delimiter . json_encode($result));
     }
 
     private function getNodeChildren(\DOMNodeList $childNodes): array
