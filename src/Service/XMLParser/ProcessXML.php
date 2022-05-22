@@ -23,6 +23,9 @@ class ProcessXML
         $this->processResultToStream(null, null, true);
     }
 
+    /**
+     * @param null|resource $fp
+     */
     private function processResultToStream(\DomNode|null $node, $fp, bool $reset = false): void
     {
         static $row = 0;

@@ -16,9 +16,9 @@ class XmlExportService
     }
 
     /**
-     * @return false|string
+     * @return string|null|bool
      */
-    public function exportData(ExportDataParserAdapterInterface $exportAdapter, string $inputFile, string $outputDir, string $filename): string|bool
+    public function exportData(ExportDataParserAdapterInterface $exportAdapter, string $inputFile, string $outputDir, string $filename): string|null|bool
     {
         try {
             $reader = new \XMLReader;
