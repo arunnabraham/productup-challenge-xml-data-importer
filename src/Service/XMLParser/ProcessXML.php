@@ -15,7 +15,7 @@ class ProcessXML
         $this->resetProcess();
     }
 
-    private function resetProcess()
+    private function resetProcess(): void
     {
         $this->processResultToStream(null, null, true);
     }

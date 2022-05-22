@@ -10,7 +10,7 @@ use Arunnabraham\XmlDataImporter\Service\XMLParser\ProcessXML;
 class XmlExportService
 {
     private string $processMode;
-    public function setFileProcessMode($processMode)
+    public function setFileProcessMode($processMode): void
     {
         $this->processMode = $processMode;
     }
@@ -43,6 +43,9 @@ class XmlExportService
         return false;
     }
 
+     /**
+     * @return false|resource
+     */
     public function getFileProcessMode()
     {
         return match ($this->processMode) {

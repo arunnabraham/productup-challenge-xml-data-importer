@@ -14,6 +14,9 @@ use Symfony\Component\Console\Input\InputOption;
 
 class XMLImportExportCommand extends Command
 {
+    /**
+     * @return void
+     */
     protected function configure()
     {
         $this->setName('export')
@@ -40,7 +43,7 @@ class XMLImportExportCommand extends Command
             }
         } else {
             if (!empty($validation->getValidationErrorMessages())) {
-                $output->writeln(sprintf('<error>%s</error>', 'Input validation errors:'.PHP_EOL));
+                $output->writeln(sprintf('<error>%s</error>', 'Input validation errors:' . PHP_EOL));
                 foreach ($validation->getValidationErrorMessages() as $validatonMessages) {
                     $output->writeln(sprintf('<comment>%s</comment>', implode(PHP_EOL, $validatonMessages)));
                 }

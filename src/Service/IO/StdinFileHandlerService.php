@@ -6,7 +6,9 @@ namespace Arunnabraham\XmlDataImporter\Service\IO;
 
 class StdinFileHandlerService
 {
-
+    /**
+     * @return false|resource
+     */
     public function recieveAndWriteTempOfInputStream()
     {
         $inputStream = STDIN;
@@ -14,7 +16,7 @@ class StdinFileHandlerService
         while (!feof($inputStream)) {
             fwrite($tmpStream, fread(STDIN, 1), 1);
         }
-        fclose(STDIN);
+        fclose($inputStream);
         return $tmpStream;
     }
 }
