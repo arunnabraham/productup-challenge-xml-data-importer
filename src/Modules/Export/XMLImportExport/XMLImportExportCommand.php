@@ -24,6 +24,9 @@ class XMLImportExportCommand extends Command
             ->addArgument('exportformat', InputArgument::REQUIRED, 'Input export format eg: csv or json');
     }
 
+    /**
+     * @return int
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $validation =

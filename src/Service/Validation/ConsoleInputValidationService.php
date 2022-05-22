@@ -15,7 +15,7 @@ class ConsoleInputValidationService implements InputValidationInterface
     {
         $this->validationConfig = $validationConfig;
     }
-    public function validateArguments(InputInterface $input): InputValidationInterface
+    public function validateArguments(InputInterface $input): static|null
     {
         try {
             $validations = [];

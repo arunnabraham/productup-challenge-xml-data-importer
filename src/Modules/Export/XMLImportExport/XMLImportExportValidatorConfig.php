@@ -9,6 +9,9 @@ use Arunnabraham\XmlDataImporter\Service\Validation\InputValidatorInterface;
 class XMLImportExportValidatorConfig implements InputValidatorInterface
 {
     private array $schema;
+    /**
+     * @return static
+     */
     public function definedValidatonSchema(): XMLImportExportValidatorConfig
     {
         $this->schema = [
@@ -17,6 +20,11 @@ class XMLImportExportValidatorConfig implements InputValidatorInterface
                 //Argument Key
                 'exportformat' =>
                 //Validation callback
+                /**
+                 * @return (bool|string)[][]
+                 *
+                 * @psalm-return array{0: array{0: bool, 1: string}}
+                 */
                 function ($input): array {
                     return [
                         [

@@ -62,14 +62,14 @@ class XmlImportService
         }
     }
 
-    private function runExport(): string
+    private function runExport(): bool|string
     {
         $exportService =  new XmlExportService;
         $exportService->setFileProcessMode(env('PROCESS_MODE'));
         return $exportService->exportData($this->exportDriver, $this->inputFile, $this->outputDir, $this->outputFilePrefix . '_' . uniqid() . '.' . strtolower($this->exportFormat));
     }
 
-    private function setExportDriver($format): void
+    private function setExportDriver(string $format): void
     {
         $this->exportDriver = (new (self::EXPORT_FORMATS[strtolower($format)])());
     }

@@ -9,7 +9,10 @@ use Arunnabraham\XmlDataImporter\Service\Metadata\WriteMetadataNdJSONService;
 class ProcessXML
 {
 
-    public function processExport($node, $fp): void
+    /**
+     * @param resource $fp
+     */
+    public function processExport(\DOMNode|false $node, $fp): void
     {
         $this->processResultToStream($node, $fp);
         $this->resetProcess();
@@ -20,7 +23,7 @@ class ProcessXML
         $this->processResultToStream(null, null, true);
     }
 
-    private function processResultToStream(\DomNode|null $node, $fp, $reset = false): void
+    private function processResultToStream(\DomNode|null $node, $fp, bool $reset = false): void
     {
         static $row = 0;
         static $column = 0;
@@ -65,6 +68,11 @@ class ProcessXML
         return;
     }
 
+    /**
+     * @return (\DOMNode|null)[]
+     *
+     * @psalm-return list<\DOMNode|null>
+     */
     private function getNodeChildren(\DOMNodeList $childNodes): array
     {
         $i = 0;

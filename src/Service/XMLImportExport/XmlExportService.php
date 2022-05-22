@@ -15,7 +15,10 @@ class XmlExportService
         $this->processMode = $processMode;
     }
 
-    public function exportData(ExportDataParserAdapterInterface $exportAdapter, $inputFile, string $outputDir, string $filename): string|bool
+    /**
+     * @return false|string
+     */
+    public function exportData(ExportDataParserAdapterInterface $exportAdapter, string $inputFile, string $outputDir, string $filename): string|bool
     {
         try {
             $reader = new \XMLReader;

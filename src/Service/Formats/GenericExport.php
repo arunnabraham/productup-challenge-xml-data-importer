@@ -11,7 +11,7 @@ abstract class GenericExport implements
     ExportCoreFormatInterface
 {
     protected string $exportFileLocation;
-    public function returnExportOutput(string $exportLocation, $inputResource): string
+    public function returnExportOutput(string $exportLocation, $inputResource): string|null
     {
         $this->exportFileLocation = $exportLocation;
         if ($this->processData($inputResource)) {
@@ -48,6 +48,10 @@ abstract class GenericExport implements
         return true;
     }
 
+    /**
+     * @param resource $sourceResource
+     * @param null|resource $destinationResource
+     */
     public function coreFormatAndWrite($sourceResource, $destinationResource = null, $destinatonPath = ''): void
     {
     }
