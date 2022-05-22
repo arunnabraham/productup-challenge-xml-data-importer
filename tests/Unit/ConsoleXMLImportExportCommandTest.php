@@ -5,18 +5,15 @@ declare(strict_types=1);
 namespace Tests\Unit;
 
 use Arunnabraham\XmlDataImporter\Modules\Export\XMLImportExport\XMLImportExportCommand;
-use Arunnabraham\XmlDataImporter\Modules\Export\XMLImportExport\XMLImportExportValidatorConfig;
-use Arunnabraham\XmlDataImporter\Service\Validation\ConsoleInputValidationService;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Console\Input\Input;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Dotenv\Dotenv;
 
-class XMLImportExportCommandTest extends TestCase
+class ConsoleXMLImportExportCommandTest extends TestCase
 {
     private $consoleValidation = null;
 
-    public function testValidateForConsoleInputCsvFormat(): void
+    /*public function testValidateForConsoleInputCsvFormat(): void
     {
         $commandName = 'export';
         $exportFormat = 'csv';
@@ -30,7 +27,7 @@ class XMLImportExportCommandTest extends TestCase
         $commandName = 'export';
         $exportFormat = 'json';
         $testerOutput = $this->consoleInputHandler($commandName, ['exportformat' => $exportFormat]);
-        $this->assertStringStartsWith('Export File:', $testerOutput, 'Invalid Console Input');
+        $this->assertStringStartsWith('Export File:', $testerOutput->getDisplay(), 'Invalid Console Input');
         //  return;
     }
 
@@ -48,6 +45,12 @@ class XMLImportExportCommandTest extends TestCase
             'command' => $commandName
         ], $arguments);
         $tester->execute($commandStream);
-        return $tester->getDisplay();
+        array_map('fclose', get_resources('stream'));
+        return $tester;
     }
+
+    public function __destruct()
+    {
+        array_map('fclose', get_resources('stream'));
+    }  */
 }

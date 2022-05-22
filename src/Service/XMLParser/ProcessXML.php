@@ -45,9 +45,7 @@ class ProcessXML {
                     $result[$nodePath['basename']] = $node->nodeValue;
                     $column++;
                 } else {
-                    $delimiter = $row > 0 ? PHP_EOL : '';
-                    fputs($fp, $delimiter . json_encode($result));
-                    //file_put_contents(__DIR__ . '/temp.ndjson', json_encode($result) . PHP_EOL, FILE_APPEND);
+                    $this->writeMetadata($fp, $row, $result);
                     $column = 0;
                     $row++;
                 }
@@ -58,6 +56,14 @@ class ProcessXML {
             appLogger('info', 'Process Ended');
         }
         return;
+    }
+
+    public function writeMetadata($fp, $row, $result): void
+    {
+        // Metadata is ndjson format.
+        // refer: http://ndjson.org/
+        $delimiter = $row > 0 ? PHP_EOL : '';
+        fputs($fp, $delimiter . json_encode($result));
     }
 
     private function getNodeChildren(\DOMNodeList $childNodes): array

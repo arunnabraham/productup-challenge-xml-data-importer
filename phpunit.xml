@@ -12,5 +12,6 @@
   </testsuites>
   <php>
     <env name="APP_MODE" value="testing"/>
+    <env name="DEFAULT_DIR_PATH" value="/home/arun/work/productup-challenge-xml-data-importer-stdin"/>
   </php>
 </phpunit>
