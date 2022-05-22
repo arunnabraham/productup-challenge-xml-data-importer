@@ -9,11 +9,10 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Dotenv\Dotenv;
 
-class ConsoleXMLImportExportCommandTest extends TestCase
+/*class ConsoleXMLImportExportCommandTest extends TestCase
 {
-    private $consoleValidation = null;
 
-    /*public function testValidateForConsoleInputCsvFormat(): void
+    public function testValidateForConsoleInputCsvFormat(): void
     {
         $commandName = 'export';
         $exportFormat = 'csv';
@@ -45,12 +44,13 @@ class ConsoleXMLImportExportCommandTest extends TestCase
             'command' => $commandName
         ], $arguments);
         $tester->execute($commandStream);
-        array_map('fclose', get_resources('stream'));
+        //array_map('fclose', get_resources('stream'));
         return $tester;
     }
 
     public function __destruct()
     {
-        array_map('fclose', get_resources('stream'));
-    }  */
+     //   array_map('fclose', get_resources('stream'));
+    }
 }
+*/

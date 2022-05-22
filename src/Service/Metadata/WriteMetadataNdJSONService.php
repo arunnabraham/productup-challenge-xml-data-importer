@@ -1,6 +1,5 @@
 <?php
 
-
 declare(strict_types=1);
 
 namespace Arunnabraham\XmlDataImporter\Service\Metadata;
@@ -18,7 +17,8 @@ class WriteMetadataNdJSONService implements WriteMetaInterface
     public function writeRowDataToStream($fileStream): bool
     {
         $this->setRowData();
-        return !is_bool(fputs($fileStream, $this->getRowMeta()));
+        $writeData = fwrite($fileStream, $this->getRowMeta());
+        return !is_bool($writeData);
     }
 
     public function setRowData(): void

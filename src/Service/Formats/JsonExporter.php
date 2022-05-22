@@ -13,6 +13,14 @@ class JsonExporter extends GenericExport
     {
         try {
             $isFirstSeek = true;
+            if(!is_resource($sourceResource))
+            {
+                throw new \Exception('Source resource is invalid');
+            }
+            if(!is_resource($destinationResource))
+            {
+                throw new \Exception('Destination resource is invalid');
+            }
             while (!feof($sourceResource)) {
                 $data = fgets($sourceResource);
                 if ($isFirstSeek) {

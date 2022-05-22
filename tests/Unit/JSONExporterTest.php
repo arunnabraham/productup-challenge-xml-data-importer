@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\Unit;
 
-use Arunnabraham\XmlDataImporter\Service\Formats\CsvExporter;
+use Arunnabraham\XmlDataImporter\Service\Formats\JsonExporter;
 use Arunnabraham\XmlDataImporter\Service\Metadata\WriteMetadataNdJSONService;
 use PHPUnit\Framework\TestCase;
 
-class CsvExporterTest extends TestCase
+class JSONExporterTest extends TestCase
 {
     private string $outFilePath;
     private string $metaFilePath;
@@ -17,27 +17,30 @@ class CsvExporterTest extends TestCase
     protected function setUp(): void
     {
         $this->metaFilePath = $_ENV['DEFAULT_DIR_PATH'] . '/xml-samples/employee.ndjson';
-        $this->outFilePath = $_ENV['DEFAULT_DIR_PATH'] . '/xml-samples/employee_test.csv';
+        $this->outFilePath = $_ENV['DEFAULT_DIR_PATH'] . '/xml-samples/employee_test.json';
         $this->removeTestFilesIFExists();
     }
 
     //Start Test cases
     public function testdoesOuputFile(): void
     {
-        $this->performCSVOut();
+        $this->performJSONOut();
         $this->assertFileExists($this->outFilePath, 'File does not exists');
     }
 
     public function testIsOutfileIsCSV(): void
     {
-        $this->performCSVOut();
+        $this->performJSONOut();
         $fp = fopen($this->outFilePath, 'r');
         $i=0;
+        $str = '';
         while(!feof($fp))
         {
             //$rowLength = strlen(trim(fgets($fp)));
-            $this->assertIsArray(fgetcsv($fp), 'Invalid row'. $i++.  ' '.fgets($fp));
+           $str .= fgets($fp);
         }
+        $this->assertJson($str, 'Invalid Json output');
+
     }
     //End Test cases
 
@@ -67,12 +70,12 @@ class CsvExporterTest extends TestCase
         }
     }
 
-    private function performCSVOut()
+    private function performJSONOut()
     {
         $this->createFakeMeta();
         $fileOutput = fopen($this->outFilePath, 'w');
         $metaRead = fopen($this->metaFilePath, 'r');
-        (new CsvExporter)->coreFormatAndWrite($metaRead, $fileOutput, $this->outFilePath);
+        (new JsonExporter)->coreFormatAndWrite($metaRead, $fileOutput, $this->outFilePath);
         fclose($metaRead);
         fclose($fileOutput);
     }
