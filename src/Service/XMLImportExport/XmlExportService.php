@@ -39,7 +39,7 @@ class XmlExportService
             $destination = $exportAdapter->returnExportOutput($outputDir . '/' . $filename, $fp);
             fclose($fp);
             return $destination;
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             appLogger('error', 'Exception: ' . $e->getMessage() . PHP_EOL . 'Trace: ' . $e->getTraceAsString());
             return false;
         }

@@ -23,9 +23,6 @@ class ProcessXML
         $this->processResultToStream(null, null, true);
     }
 
-    /**
-     * @param null|resource $fp
-     */
     private function processResultToStream(\DomNode|null $node, $fp, bool $reset = false): void
     {
         static $row = 0;
@@ -63,10 +60,10 @@ class ProcessXML
                     $row++;
                 }
             }
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             appLogger('error', 'Exception: ' . $e->getMessage() . PHP_EOL . 'Trace: ' . $e->getTraceAsString());
         } finally {
-            appLogger('info', 'Process Ended');
+           // appLogger('info', 'Process Ended');
         }
         return;
     }

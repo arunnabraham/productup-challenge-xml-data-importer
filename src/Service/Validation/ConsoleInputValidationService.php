@@ -29,7 +29,8 @@ class ConsoleInputValidationService implements InputValidationInterface
             }
             $this->invalidInfo = array_values(array_filter($validations, fn ($error) => !empty($error)));
             $this->isValid = empty($this->invalidInfo);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
+            appLogger('error', 'Exception: ' . $e->getMessage() . PHP_EOL . 'Trace: ' . $e->getTraceAsString());
             return null;
         }
         return $this;

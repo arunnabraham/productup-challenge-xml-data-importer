@@ -6,6 +6,7 @@ namespace Arunnabraham\XmlDataImporter\Service\XMLImportExport;
 
 use Eclipxe\XmlSchemaValidator\SchemaValidator;
 use Exception;
+use Throwable;
 
 class XmlValidatorService
 {
@@ -20,7 +21,7 @@ class XmlValidatorService
             } else {
                 return true;
             }
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
             appLogger('error', 'Exception: ' . $e->getMessage() . PHP_EOL . 'Trace: ' . $e->getTraceAsString());
             return false;
         }

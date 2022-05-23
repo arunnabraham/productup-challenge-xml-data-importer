@@ -16,7 +16,7 @@ use Arunnabraham\XmlDataImporter\Service\IO\{
 
 use Exception;
 
-class XmlImportService
+class XmlImportExportService
 {
 
     public string $outputDir;
@@ -56,7 +56,7 @@ class XmlImportService
             } else {
                 throw new \Exception('Invalid XML Input');
             }
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             appLogger('error', 'Exception: ' . $e->getMessage() . PHP_EOL . 'Trace: ' . $e->getTraceAsString());
             return 'Error: ' . $e->getMessage();
         }
@@ -74,6 +74,13 @@ class XmlImportService
 
     private function setExportDriver(string $format): void
     {
-        $this->exportDriver = (new (self::EXPORT_FORMATS[strtolower($format)])());
+        try {
+            if (!isset(self::EXPORT_FORMATS[strtolower($format)])) {
+                throw new Exception("Undefined Export Format", 1);
+            }
+            $this->exportDriver = (new (self::EXPORT_FORMATS[strtolower($format)])());
+        } catch (\Throwable $e) {
+            appLogger('error', 'Exception: ' . $e->getMessage() . PHP_EOL . 'Trace: ' . $e->getTraceAsString());
+        }
     }
 }

@@ -4,8 +4,6 @@ use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 use Psr\Log\LogLevel;
 
-//$logger->pushHandler(new StreamHandler(__DIR__ . '/logs/app_log.log', LogLevel::DEBUG));
-
 if (!function_exists('env')) {
     function env($key = null)
     {
@@ -16,7 +14,6 @@ if (!function_exists('env')) {
 if (!function_exists('appLogger')) {
     function appLogger($logLevel, string $message)
     {
-        //var_dump(env());
         $logger = new Logger('applog');
         $logDir = env('APP_LOG_DIR');
         $logFile = env('APP_LOG_FILENAME');

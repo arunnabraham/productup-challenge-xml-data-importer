@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Arunnabraham\XmlDataImporter\Modules\Export\XMLImportExport;
 
 use Arunnabraham\XmlDataImporter\Service\Validation\ConsoleInputValidationService;
-use Arunnabraham\XmlDataImporter\Service\XMLImportExport\XmlImportService;
+use Arunnabraham\XmlDataImporter\Service\XMLImportExport\XmlImportExportService;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -34,7 +34,7 @@ class XMLImportExportCommand extends Command
             ->validateArguments($input);
 
         if ($validation->isValid()) {
-            $processImportExport = (new XmlImportService())->processImport(
+            $processImportExport = (new XmlImportExportService())->processImport(
                 $input->getArgument('exportformat'),
                 env('DEFAULT_OUTPUT_DIR_PATH')
             );
