@@ -12,7 +12,7 @@ use PHPUnit\Framework\TestCase;
 class XmlExportServiceTest extends TestCase
 {
     private $samplingPath;
-    const FORMAT = 'csv';
+    const FORMAT = 'json';
 
     protected function setUp(): void
     {
@@ -57,5 +57,10 @@ class XmlExportServiceTest extends TestCase
     public function testDoesOutputFileHasValidFormat()
     {
         $this->assertEquals(self::FORMAT, pathinfo($this->runExport(), PATHINFO_EXTENSION));
+    }
+
+    public function testInvalidExportFormat()
+    {
+        $this->assertNotEquals(false, $this->runExport(), 'Uknown Process Error');
     }
 }
