@@ -12,5 +12,9 @@
   </testsuites>
   <php>
     <env name="APP_MODE" value="testing"/>
+    <env name="PROCESS_MODE" value="DEFAULT"/>
+    <env name="APP_LOG_DIR" value="/home/arun/work/productup-challenge-xml-data-importer-stdin/log"/>
+    <env name="APP_LOG_FILENAME" value="app_log.log"/>
+    <env name="DEFAULT_DIR_PATH" value="/home/arun/work/productup-challenge-xml-data-importer-stdin"/>
   </php>
 </phpunit>

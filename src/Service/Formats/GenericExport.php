@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Arunnabraham\XmlDataImporter\Service\Formats;
 
-use Arunnabraham\XmlDataImporter\Service\DataParserAdapterInterface;
+use Arunnabraham\XmlDataImporter\Service\ExportDriver\DataParserAdapterInterface as ExportDriverDataParserAdapterInterface;
 
 abstract class GenericExport implements
-    DataParserAdapterInterface,
+    ExportDriverDataParserAdapterInterface,
     ExportCoreFormatInterface
 {
     protected string $exportFileLocation;
-    public function returnExportOutput($exportLocation, $inputResource): string
+    public function returnExportOutput(string $exportLocation, $inputResource): string|null
     {
         $this->exportFileLocation = $exportLocation;
         if ($this->processData($inputResource)) {
@@ -48,6 +48,10 @@ abstract class GenericExport implements
         return true;
     }
 
+    /**
+     * @param resource $sourceResource
+     * @param null|resource $destinationResource
+     */
     public function coreFormatAndWrite($sourceResource, $destinationResource = null, $destinatonPath = ''): void
     {
     }

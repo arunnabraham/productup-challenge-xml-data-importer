@@ -1,5 +1,5 @@
 # ProductUp Challenge XML Data Importer
-A console based application to parse XML data and converts to various formats Mainly JSON, CSV etc. Easly implement other formats with reusable code.
+A console based application to parse XML data and converts to various formats Mainly JSON, CSV etc. Easly implement other formats with reusable/extensible code.
 
 ## Initial Setup
 
@@ -10,18 +10,30 @@ chmod +x ./run
 # Dev mode How to Run
 ## Arguments 
 
-export csv|json
-
--t [input Type] local|remote
-
--i [input file path] http(s) | /filepath
+<file stream stdin> | php ./run export <format>
 
 Example:
 
-<code> ./run export csv -t local -i /rootpath/xml-samples/employee.xml</code>
+Remote option: 
 
- <code> ./run export csv -t remote -i http://a.cdn.searchspring.net/help/feeds/searchspring.xml </code>
+<code> curl -s http://a.cdn.searchspring.net/help/feeds/searchspring.xml | php ./run export csv </code>
+
+
+<code> curl -s http://a.cdn.searchspring.net/help/feeds/searchspring.xml | php ./run export json </code>
+
+
+<code> cat path/filename.xml | php ./run export csv </code>
  
+ 
+ <code> cat path/filename.xml | php ./run export json </code>
+ 
+ ## Unit testing
+ 
+ Edit phpunit.xml env attribute to relevent values
+ run <code> vendor/bin/phpunit </code>
+ 
+ Known Issue, some test cases expects STDIN. To run them
+use <code> curl -s http://a.cdn.searchspring.net/help/feeds/searchspring.xml | vendor/bin/phpunit </code>
  
  ## System Requirements
  

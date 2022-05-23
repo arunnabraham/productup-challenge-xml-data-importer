@@ -1,23 +1,29 @@
 <?php
+
 declare(strict_types=1);
+
 namespace Arunnabraham\XmlDataImporter\Service\XMLParser;
 
+use Arunnabraham\XmlDataImporter\Service\Metadata\WriteMetadataNdJSONService;
 
+class ProcessXML
+{
 
-class ProcessXML {
-
-    public function processExport($node, $fp): void
+    /**
+     * @param resource $fp
+     */
+    public function processExport(\DOMNode|false $node, $fp): void
     {
         $this->processResultToStream($node, $fp);
         $this->resetProcess();
     }
 
-    private function resetProcess()
+    private function resetProcess(): void
     {
         $this->processResultToStream(null, null, true);
     }
 
-    private function processResultToStream(\DomNode|null $node, $fp, $reset = false): void
+    private function processResultToStream(\DomNode|null $node, $fp, bool $reset = false): void
     {
         static $row = 0;
         static $column = 0;
@@ -48,21 +54,25 @@ class ProcessXML {
                     $result[$nodePath['basename']] = $node->nodeValue;
                     $column++;
                 } else {
-                    $delimiter = $row > 0 ? PHP_EOL : '';
-                    fputs($fp, $delimiter . json_encode($result));
-                    //file_put_contents(__DIR__ . '/temp.ndjson', json_encode($result) . PHP_EOL, FILE_APPEND);
+                    (new WriteMetadataNdJSONService($row, $result))
+                        ->writeRowDataToStream($fp);
                     $column = 0;
                     $row++;
                 }
             }
-        } catch (\Exception $e) {
-            appLogger('error', 'Exception: '.$e->getMessage().PHP_EOL.'Trace: '.$e->getTraceAsString());
+        } catch (\Throwable $e) {
+            appLogger('error', 'Exception: ' . $e->getMessage() . PHP_EOL . 'Trace: ' . $e->getTraceAsString());
         } finally {
-            appLogger('info', 'Process Ended');
+           // appLogger('info', 'Process Ended');
         }
         return;
     }
 
+    /**
+     * @return (\DOMNode|null)[]
+     *
+     * @psalm-return list<\DOMNode|null>
+     */
     private function getNodeChildren(\DOMNodeList $childNodes): array
     {
         $i = 0;
