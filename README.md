@@ -27,6 +27,13 @@ Remote option:
  
  <code> cat path/filename.xml | php ./run export json </code>
  
+ ## Unit testing
+ 
+ Edit phpunit.xml env attribute to relevent values
+ run <code> vendor/bin/phpunit </code>
+ 
+ Known Issue, some test cases expects STDIN. To run them
+use <code> curl -s http://a.cdn.searchspring.net/help/feeds/searchspring.xml | vendor/bin/phpunit </code>
  
  ## System Requirements
  
